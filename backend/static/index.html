@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מערכת ניהול מחשבים</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>מערכת ניהול מחשבים</h1>
+            <div class="actions">
+                <button id="add-computer-btn" class="btn primary">
+                    <i class="fas fa-plus"></i> מחשב חדש
+                </button>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="חיפוש מחשב...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section id="computers-list" class="card">
+                <h2>רשימת מחשבים</h2>
+                <ul id="computers-container"></ul>
+            </section>
+
+            <section id="computer-details" class="card hidden">
+                <div class="card-header">
+                    <h2>פרטי מחשב</h2>
+                    <button id="close-details" class="btn secondary">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="computer-info">
+                    <div class="info-row">
+                        <span class="label">שם מלא:</span>
+                        <span id="detail-name" class="value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">כתובת mac:</span>
+                        <span id="detail-id" class="value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">מיקום:</span>
+                        <span id="detail-address" class="value"></span>
+                        <button id="edit-address-btn" class="btn small">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grades-section">
+                    <h3>ציונים</h3>
+                    <div class="grades-container">
+                        <div id="grades-list"></div>
+                        <div class="grades-summary">
+                            <div class="grade-average">
+                                <span>ממוצע:</span>
+                                <span id="grade-average-value">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="add-grade-btn" class="btn secondary">
+                        <i class="fas fa-plus"></i> הוסף ציון
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modal: Add computer -->
+        <div id="add-computer-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>הוספת מחשב חדש</h3>
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                </div>
+                <form id="add-computer-form">
+                    <div class="form-group">
+                        <label for="new-name">שם מלא</label>
+                        <input type="text" id="new-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mac">כתובת MAC</label>
+                        <input type="text" id="mac" required pattern="^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$"
+                            title="יש להזין כתובת MAC בפורמט תקין: XX:XX:XX:XX:XX:XX">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-address">כתובת</label>
+                        <input type="text" id="new-address" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn secondary modal-cancel">ביטול</button>
+                        <button type="submit" class="btn primary">שמירה</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Add Grade -->
+        <div id="add-grade-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>הוספת ציון חדש</h3>
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                </div>
+                <form id="add-grade-form">
+                    <div class="form-group">
+                        <label for="new-grade">ציון</label>
+                        <input type="number" id="new-grade" min="0" max="100" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn secondary modal-cancel">ביטול</button>
+                        <button type="submit" class="btn primary">שמירה</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Edit Address -->
+        <div id="edit-address-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>עדכון כתובת</h3>
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                </div>
+                <form id="edit-address-form">
+                    <div class="form-group">
+                        <label for="updated-address">כתובת חדשה</label>
+                        <input type="text" id="updated-address" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn secondary modal-cancel">ביטול</button>
+                        <button type="submit" class="btn primary">עדכון</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
