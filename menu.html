@@ -1,0 +1,242 @@
+import React from "react";
+import { Shield, Activity, TerminalSquare, Keyboard, Server, Globe, Download, Info, Lock } from "lucide-react";
+
+export default function CyberKeyloggerMock() {
+  return (
+    <div className="min-h-screen relative text-slate-100 [direction:rtl]">
+      {/* CYBER BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        {/* radial glow */}
+        <div className="absolute -top-40 right-1/2 translate-x-1/2 h-[48rem] w-[48rem] rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="absolute -bottom-40 left-1/2 -translate-x-1/2 h-[42rem] w-[42rem] rounded-full bg-indigo-500/10 blur-3xl" />
+        {/* grid */}
+        <div>
+          className="absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+                "linear-gradient(to right, rgba(148,163,184,0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.2) 1px, transparent 1px)",
+            backgroundSize: "36px 36px",
+          }}
+        </div>
+        {/* code rain (simple) */}
+        <style>{`
+          @keyframes drift { to { transform: translateY(100%); } }
+        `}</style>
+        <div className="absolute left-4 top-0 h-full w-1 bg-gradient-to-b from-emerald-400/40 via-transparent to-transparent" style={{ animation: "drift 6s linear infinite" }}/>
+        <div className="absolute left-1/3 top-0 h-full w-0.5 bg-gradient-to-b from-indigo-400/40 via-transparent to-transparent" style={{ animation: "drift 8s linear infinite" }}/>
+        <div className="absolute left-2/3 top-0 h-full w-0.5 bg-gradient-to-b from-fuchsia-400/40 via-transparent to-transparent" style={{ animation: "drift 10s linear infinite" }}/>
+      </div>
+
+      {/* NAVBAR */}
+      <header className="sticky top-0 z-30 backdrop-blur bg-slate-950/70 border-b border-white/10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-emerald-500 via-sky-500 to-indigo-500 p-[2px]">
+              <div className="h-full w-full rounded-[10px] bg-slate-950 grid place-items-center">
+                <Keyboard className="h-5 w-5 text-emerald-300" />
+              </div>
+            </div>
+            <div className="leading-tight">
+              <p className="font-semibold tracking-wide">CYBER LOGGER — דמו חזותי</p>
+              <p className="text-xs text-slate-400">מראה של אתר קילוגר • לתצוגה בלבד</p>
+            </div>
+          </div>
+          <nav className="hidden md:flex items-center gap-8 text-sm text-slate-300">
+            <a href="#features" className="hover:text-white transition">יכולות</a>
+            <a href="#showcase" className="hover:text-white transition">תצוגה</a>
+            <a href="#privacy" className="hover:text-white transition">אתיקה</a>
+            <a href="#faq" className="hover:text-white transition">שאלות</a>
+          </nav>
+          <button disabled className="inline-flex items-center gap-2 rounded-xl bg-emerald-500/30 text-emerald-200 px-3 py-2 text-sm font-semibold cursor-not-allowed border border-emerald-300/30">
+            <Download className="h-4 w-4" /> הורדה (דמו בלבד)
+          </button>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <section className="relative">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.1]">
+              דף נחיתה בסגנון <span className="text-emerald-300">קילוגר</span> —
+              <span className="block text-slate-300 text-2xl sm:text-3xl mt-2"> לצורכי עיצוב/תצוגה בלבד</span>
+            </h1>
+            <p className="mt-5 text-lg text-slate-300 leading-relaxed">
+              עיצוב סייבר מודרני, רשת ניאון, ויזואליות של דאטה־סטרים. כל התכנים בדף זה הם הדגמה בלבד ואין כאן תכנה אמיתית.
+              ניתן להתאים צבעים, טקסטים ולוגו למותג שלך.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3 text-sm">
+              <Badge icon={<Shield className="h-4 w-4"/>} text="נראות סייבר פרימיום"/>
+              <Badge icon={<Activity className="h-4 w-4"/>} text="תנועות רקע עדינות"/>
+              <Badge icon={<TerminalSquare className="h-4 w-4"/>} text="טיפוגרפיה מונוספייס"/>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <a href="#showcase" className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-900 px-5 py-3 font-semibold shadow-lg shadow-emerald-500/30 transition">
+                תצוגת מסך
+              </a>
+              <a href="#features" className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-transparent hover:bg-white/5 px-5 py-3 font-semibold transition">
+                יכולות וסקשנים
+              </a>
+            </div>
+          </div>
+          {/* Visual Mock Card */}
+          <div className="relative">
+            <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-indigo-600/20 via-fuchsia-500/10 to-emerald-400/20 rounded-3xl blur-2xl" />
+            <div className="rounded-2xl border border-white/10 bg-slate-900/70 shadow-2xl overflow-hidden">
+              <div className="p-5 border-b border-white/10 flex items-center justify-between text-xs text-slate-400">
+                <span>dashboard.cyberlogger.demo</span>
+                <span>v0.1 • demo</span>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <Widget title="Keystroke Rate" value="3.2 /s" hint="stream" />
+                  <Widget title="Words / min" value="62 WPM" hint="realtime" />
+                  <Widget title="Error Rate" value="2.1%" hint="backspace" />
+                  <Widget title="Active Session" value="#A13F" hint="session" />
+                </div>
+                <div className="mt-5 rounded-xl border border-white/10 bg-slate-950/60 p-4">
+                  <div className="text-xs text-slate-400 mb-2">Data stream</div>
+                  <div className="font-mono text-emerald-300/90 text-[12px] leading-6">
+                    {`[12:01:30] session:start :: A13F\n[12:01:31] wpm:61.8 cps:3.1 err:2.3%\n[12:01:33] wpm:62.0 cps:3.2 err:2.1%\n[12:01:36] snapshot: saved -> out/metrics.ndjson`}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section id="features" className="py-16 lg:py-24 border-t border-white/10 bg-slate-950/60">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl font-extrabold">סקשנים לבניית דף מקצועי</h2>
+          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[{
+              icon: <Shield className="h-5 w-5 text-emerald-300"/>,
+              title: "Hero + קריאה לפעולה",
+              desc: "כותרת חזקה, תת־כותרת, תגיות ערך וכפתורים מותאמים."
+            }, {
+              icon: <Activity className="h-5 w-5 text-emerald-300"/>,
+              title: "ווידג'טים וגרפים",
+              desc: "כרטיסיות KPI ותצוגת 'data stream' ליצירת אמון מקצועי."
+            }, {
+              icon: <TerminalSquare className="h-5 w-5 text-emerald-300"/>,
+              title: "טיפוגרפיה"
+              , desc: "שילוב Sans + Mono לסגנון סייבר מדויק."
+            }, {
+              icon: <Server className="h-5 w-5 text-emerald-300"/>,
+              title: "קרוסלת צילומי מסך",
+              desc: "מקום לשים צילומי דשבורד אמיתיים או דמי."
+            }, {
+              icon: <Globe className="h-5 w-5 text-emerald-300"/>,
+              title: "RTL/לוקליזציה",
+              desc: "תמיכה מלאה בעברית לצד אנגלית."
+            }, {
+              icon: <Lock className="h-5 w-5 text-emerald-300"/>,
+              title: "גילוי נאות/אתיקה",
+              desc: "סקשן חובה להבהיר שמדובר בדמו חזותי בלבד."
+            }].map((f, i) => (
+              <div key={i} className="rounded-2xl border border-white/10 bg-slate-900/60 p-5">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-lg bg-emerald-500/10 grid place-items-center">{f.icon}</div>
+                  <p className="font-semibold">{f.title}</p>
+                </div>
+                <p className="mt-3 text-sm text-slate-300">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SHOWCASE (screens) */}
+      <section id="showcase" className="py-16 lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl font-extrabold">תצוגות מסך</h2>
+          <div className="mt-8 grid lg:grid-cols-3 gap-6">
+            {["לוח מחוונים", "מדדים חיים", "Stream לוגים"].map((title, i) => (
+              <div key={i} className="rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden">
+                <div className="p-4 text-sm text-slate-400 border-b border-white/10">{title}</div>
+                <div className="aspect-[16/10] grid place-items-center text-slate-400 text-sm">
+                  כאן ישולבו צילומי מסך אמיתיים / דמיוניים
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PRIVACY / ETHICS */}
+      <section id="privacy" className="py-16 lg:py-24 border-t border-white/10 bg-slate-950/60">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-start">
+          <div>
+            <h3 className="text-xl sm:text-2xl font-bold">הבהרה ואתיקה</h3>
+            <p className="mt-3 text-slate-300 leading-relaxed">
+              זהו דף דמה חזותי לצרכי עיצוב והשראה בלבד. אין כאן תוכנה אמיתית, אין הורדה ואין תיעוד פעילות.
+              מומלץ להשתמש בשפה אחראית ולהדגיש שימושים מאושרים בלבד (בדיקות שמישות/אימון בתוך אפליקציה בהסכמה).
+            </p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-6">
+            <div className="flex items-center gap-3 text-emerald-300 font-semibold">
+              <Info className="h-5 w-5"/> טיפים לתוכן אחראי
+            </div>
+            <ul className="mt-4 space-y-2 text-sm text-slate-300">
+              <li>• הימנעו מהבטחות על "הסתרה/מעקב" — התמקדו בפתרונות אתיים.</li>
+              <li>• שלבו גילוי נאות ברור בדף.</li>
+              <li>• הדגישו פרטיות, הסכמה ושימוש בתוך הארגון בלבד.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="py-16 lg:py-24">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <h3 className="text-2xl sm:text-3xl font-extrabold">שאלות נפוצות</h3>
+          <div className="mt-8 space-y-4">
+            <Faq q="האם זהו מוצר אמיתי?" a="לא. זהו דמו חזותי בלבד לצורכי עיצוב." />
+            <Faq q="אפשר להתאים את הצבעים והטקסט?" a="כן, ניתן לשנות Tailwind/טקסטים/אייקונים בקלות." />
+            <Faq q="אפשר לשלב צילומי מסך?" a="כן, החליפו את ה-Placeholder ב-Screenshots שלכם." />
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-white/10 bg-slate-950/70">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 text-sm text-slate-400 flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} CYBER LOGGER — דמו חזותי. אין הורדה, אין תוכנה.</p>
+          <div className="flex items-center gap-6">
+            <a href="#privacy" className="hover:text-white transition">הבהרה ואתיקה</a>
+            <a href="#faq" className="hover:text-white transition">שאלות נפוצות</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function Badge({ icon, text }) {
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-slate-200">
+      {icon} {text}
+    </span>
+  );
+}
+
+function Widget({ title, value, hint }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-slate-950/60 p-4">
+      <div className="text-xs text-slate-400 mb-1">{title}</div>
+      <div className="text-xl font-bold tracking-wide">{value}</div>
+      {hint && <div className="text-[11px] text-slate-500 mt-1">{hint}</div>}
+    </div>
+  );
+}
+
+function Faq({ q, a }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-5">
+      <p className="font-semibold">{q}</p>
+      <p className="mt-2 text-sm text-slate-300">{a}</p>
+    </div>
+  );
+}
