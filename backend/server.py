@@ -10,19 +10,16 @@ computers = [
         "mac_address": "00:1A:2B:3C:4D:5E",
         "name": "חסן נסראללה",
         "address": "לבנון",
-        "grades": [85, 92, 78, 90]
     },
     {
         "mac_address": "A4:5E:60:9B:3F:1D",
         "name": "יחיא סינואר",
         "address": "רצועת עזה",
-        "grades": [95, 88, 92, 89]
     },
     {
         "mac_address": "F0:D5:BF:12:34:56",
         "name": "חמינאי",
         "address": "איראן",
-        "grades": [75, 82, 90, 85]
     }
 ]
 
@@ -54,7 +51,7 @@ def add_computer():
     new_computer = request.json
 
     # Check if computer with this MAC_address already exists
-    if any(s["mac_address"] == new_computer["mac_address"] for c in computers):
+    if any(c["mac_address"] == new_computer["mac_address"] for c in computers):
         return jsonify({"error": "מחשב עם כתובת mac זו כבר קיים"}), 400
 
     # Add new computer

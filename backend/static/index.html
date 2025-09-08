@@ -14,9 +14,7 @@
         <header>
             <h1>מערכת ניהול מחשבים</h1>
             <div class="actions">
-                <button id="add-computer-btn" class="btn primary">
-                    <i class="fas fa-plus"></i> מחשב חדש
-                </button>
+
                 <div class="search-container">
                     <input type="text" id="search-input" placeholder="חיפוש מחשב...">
                     <i class="fas fa-search"></i>
@@ -38,7 +36,68 @@
                     </button>
                 </div>
 
-                <div class="computer-info">
+
+                <div>
+                    <div>
+                        <label for="search-files-from-date">from:</label>
+                        <input type="date" required>
+                    </div>
+
+                    <br>
+
+                    <div>
+                        <label for="search-files-from-hour">hour:</label>
+                        <input type="number" required min="0" max="23">
+                    </div>
+
+                    <br>
+
+                    <div>
+                        <label for="search-files-to-date">to:</label>
+                    </div>
+
+
+                    <div>
+                        <input type="date" required>
+                    </div>
+
+                    <br>
+
+                    <div>
+                        <label for="search-files-from-hour">hour:</label>
+                        <input type="number" required min="0" max="23">
+                    </div>
+
+                    <br>
+
+                    <button class="open-button" onclick="showkeystrokes()">חיפוש</button>
+                </div>
+                <div id="keystrokes" class="modal">
+                    <div class="modal-keys">
+                        <button class="close-button" onclick="hidekeystrokes()">&times;</button>
+                    </div>
+                </div>
+    </div>
+    </section>
+    </main>
+
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+
+
+
+<!-- lines = 17-19 -->
+<!-- <button id="add-computer-btn" class="btn primary">
+                    <i class="fas fa-plus"></i> מחשב חדש
+                </button> -->
+
+<!-- lines = 41-73 -->
+<!--lines = 41-73 <div class="computer-info">
                     <div class="info-row">
                         <span class="label">שם מלא:</span>
                         <span id="detail-name" class="value"></span>
@@ -54,9 +113,9 @@
                             <i class="fas fa-edit"></i>
                         </button>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="grades-section">
+<!-- <div class="grades-section">
                     <h3>ציונים</h3>
                     <div class="grades-container">
                         <div id="grades-list"></div>
@@ -70,11 +129,10 @@
                     <button id="add-grade-btn" class="btn secondary">
                         <i class="fas fa-plus"></i> הוסף ציון
                     </button>
-                </div>
-            </section>
-        </main>
+                </div> -->
 
-        <!-- Modal: Add computer -->
+<!-- lines = 86-153 -->
+<!-- Modal: Add computer
         <div id="add-computer-modal" class="modal-overlay hidden">
             <div class="modal-content">
                 <div class="modal-header">
@@ -101,9 +159,9 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> -->
 
-        <!-- Modal: Add Grade -->
+<!-- Modal: Add Grade
         <div id="add-grade-modal" class="modal-overlay hidden">
             <div class="modal-content">
                 <div class="modal-header">
@@ -121,10 +179,10 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> -->
 
-        <!-- Modal: Edit Address -->
-        <div id="edit-address-modal" class="modal-overlay hidden">
+<!-- Modal: Edit Address -->
+<!-- <div id="edit-address-modal" class="modal-overlay hidden">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>עדכון כתובת</h3>
@@ -141,10 +199,4 @@
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-
-</html>
+        </div> -->
