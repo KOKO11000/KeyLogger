@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CYBER LOGGER — דמו חזותי (אתר תדמית) + פיצ'רים עובדים</title>
+<meta name="description" content="דף נחיתה בסגנון קילוגר — דמו חזותי מקצועי, ללא תוכנה אמיתית, עם פיצ'רים front-end שעובדים." />
+<style>
+  :root{
+    --bg:#0b1220; --bg2:#0e1628; --panel:#121a2e; --muted:#8aa0b7;
+    --text:#e6f1ff; --accent:#35f0b2; --accent-2:#7aa2ff; --border:rgba(255,255,255,.08);
+    --shadow:0 10px 30px rgba(0,0,0,.35); --radius:16px;
+  }
+  html{scroll-behavior:smooth}
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+    background:radial-gradient(1200px 600px at 50% -10%, rgba(53,240,178,.08), transparent),
+               radial-gradient(900px 500px at 50% 110%, rgba(122,162,255,.08), transparent),
+               var(--bg);color:var(--text);line-height:1.6}
+  a{color:inherit;text-decoration:none} .container{max-width:1200px;margin:0 auto;padding:0 20px}
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:40;backdrop-filter:blur(10px);
+    background:linear-gradient(to bottom, rgba(14,22,40,.8), rgba(14,22,40,.6));border-bottom:1px solid var(--border)}
+  .nav__row{height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand__logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#19e2a0,#4ab7ff);padding:2px}
+  .brand__inner{width:100%;height:100%;border-radius:10px;background:var(--bg);display:grid;place-items:center}
+  .kbd{width:18px;height:18px;display:block}
+  .nav__links{display:none;gap:20px;color:#c7d6ea}
+  .nav__link{padding:6px 8px;border-radius:10px}
+  .nav__link:hover{background:rgba(255,255,255,.06);color:#fff}
+  @media(min-width:900px){.nav__links{display:flex}}
+  .nav__actions{display:flex;align-items:center;gap:10px}
+  .nav__cta{background:linear-gradient(135deg,#19e2a0,#72f0c8);color:#061019;border:none;padding:10px 14px;border-radius:12px;
+    font-weight:700;box-shadow:0 8px 22px rgba(53,240,178,.28);cursor:pointer}
+  .ghost{border:1px solid var(--border);background:rgba(255,255,255,.02);color:#dbe9ff;border-radius:12px;padding:10px 12px;cursor:pointer}
+  .swatch{width:18px;height:18px;border-radius:50%;border:1px solid var(--border);cursor:pointer;display:inline-block}
+  .swatch-row{display:flex;gap:6px;align-items:center}
+  /* HERO */
+  .hero{position:relative;padding:64px 0 96px}
+  .glow{position:absolute;inset:-120px 0 auto 0;z-index:-1;pointer-events:none}
+  .glow::before,.glow::after{content:"";position:absolute;left:50%;transform:translateX(-50%);filter:blur(80px);border-radius:999px;opacity:.55}
+  .glow::before{top:-160px;width:900px;height:420px;background:radial-gradient(circle at 50% 50%, rgba(53,240,178,.18), transparent 60%)}
+  .glow::after{bottom:-180px;width:800px;height:380px;background:radial-gradient(circle at 50% 50%, rgba(122,162,255,.14), transparent 60%)}
+  .hero__grid{display:grid;gap:40px} @media(min-width:960px){.hero__grid{grid-template-columns:1.1fr .9fr;align-items:center}}
+  .title{font-size:40px;line-height:1.15;margin:0 0 12px;font-weight:900} @media(min-width:960px){.title{font-size:52px}}
+  .subtitle{font-size:20px;color:#c7d6ea;margin:0 0 10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid var(--border);
+    background:rgba(255,255,255,.05);font-size:13px}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+  .btn{padding:12px 18px;border-radius:14px;font-weight:700;border:1px solid transparent;cursor:pointer}
+  .btn--primary{background:linear-gradient(135deg,#19e2a0,#7af0ff);color:#061019;box-shadow:0 10px 26px rgba(26,232,173,.25)}
+  .btn--ghost{border-color:var(--border);background:rgba(255,255,255,.02);color:#dbe9ff}
+  .mock{position:relative;border:1px solid var(--border);background:rgba(18,26,46,.7);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .mock__top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);color:#a8bdd3;font-size:12px}
+  .mock__body{padding:16px} .kpis{display:grid;gap:12px} @media(min-width:640px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{border:1px solid var(--border);border-radius:12px;background:rgba(9,14,28,.6);padding:12px;position:relative}
+  .kpi__label{font-size:12px;color:#9cb3ca} .kpi__value{font-size:20px;font-weight:800;margin-top:4px}
+  .copy{position:absolute;top:8px;left:8px;font-size:12px;color:#9cb3ca;background:rgba(255,255,255,.03);border:1px solid var(--border);
+    border-radius:10px;padding:4px 8px;cursor:pointer}
+  .stream{margin-top:14px;border:1px solid var(--border);border-radius:12px;background:#0a1020;padding:12px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;color:#bfffe9;font-size:12px;line-height:1.5;height:140px;overflow:auto}
+  .stream__ts{color:#7aa2ff}
+  .section{padding:84px 0} .section--tint{background:linear-gradient(to bottom, rgba(255,255,255,.03), transparent)}
+  .cards{display:grid;gap:16px} @media(min-width:900px){.cards{grid-template-columns:repeat(3,1fr)}}
+  .card{border:1px solid var(--border);background:rgba(18,26,46,.6);border-radius:16px;padding:18px}
+  .card h3{margin:0 0 6px;font-size:18px} .card p{margin:0;color:#c4d6eb;font-size:14px}
+  .grid-3{display:grid;gap:16px} @media(min-width:900px){.grid-3{grid-template-columns:repeat(3,1fr)}}
+  .frame{border:1px solid var(--border);background:rgba(18,26,46,.6);border-radius:16px;overflow:hidden;position:relative}
+  .frame__head{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;color:#a8bdd3;display:flex;justify-content:space-between;align-items:center}
+  .frame__body{aspect-ratio:16/10;display:grid;place-items:center;color:#a8bdd3;background-size:cover;background-position:center}
+  .upload-btn{border:1px dashed var(--border);background:rgba(255,255,255,.02);color:#c7d6ea;border-radius:10px;padding:6px 10px;font-size:12px;cursor:pointer}
+  .hint{position:absolute;bottom:10px;inset-inline-start:10px;background:rgba(0,0,0,.35);padding:4px 8px;border-radius:8px;font-size:11px;color:#d2e6ff}
+  .faq{max-width:900px;margin:0 auto}
+  details{border:1px solid var(--border);background:rgba(18,26,46,.6);border-radius:14px;padding:14px}
+  details+details{margin-top:10px} summary{cursor:pointer;font-weight:700} summary::-webkit-details-marker{display:none}
+  .footer{border-top:1px solid var(--border);padding:24px 0;color:#a8bdd3;font-size:14px}
+  .ico{width:16px;height:16px;vertical-align:-2px}
+  .toast{position:fixed;inset:auto 50% 22px auto;transform:translateX(50%);background:#122139;border:1px solid var(--border);color:#d7e7ff;
+    padding:10px 14px;border-radius:10px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .25s ease;font-size:14px}
+  .toast.show{opacity:1}
+  /* Modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+  .modal__card{max-width:520px;width:100%;background:rgba(18,26,46,.95);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:16px}
+  .modal__row{display:grid;gap:8px;margin-top:8px}
+  .input, textarea{border:1px solid var(--border);background:#0e1628;color:#e6f1ff;border-radius:12px;padding:10px 12px;font-size:14px}
+  textarea{min-height:120px;resize:vertical}
+  .modal__actions{display:flex;gap:8px;justify-content:flex-start;margin-top:12px}
+</style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav__row">
+      <div class="brand">
+        <div class="brand__logo"><div class="brand__inner">
+          <!-- keyboard icon -->
+          <svg class="kbd" viewBox="0 0 24 24" fill="none" stroke="#35f0b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"></path>
+          </svg>
+        </div></div>
+        <div>
+          <div style="font-weight:700;letter-spacing:.3px">CYBER LOGGER — דמו חזותי</div>
+          <div style="font-size:12px;color:#a8bdd3">מראה אתר קילוגר • לתצוגה בלבד</div>
+        </div>
+      </div>
+      <div class="nav__links">
+        <a class="nav__link" href="#features">יכולות</a>
+        <a class="nav__link" href="#showcase">תצוגה</a>
+        <a class="nav__link" href="#ethics">אתיקה</a>
+        <a class="nav__link" href="#faq">שאלות</a>
+      </div>
+      <div class="nav__actions">
+        <button id="btnPause" class="ghost" type="button">⏯ עצור הדמיה</button>
+        <div class="swatch-row" title="שינוי צבע דגש">
+          <div class="swatch" data-accent="#35f0b2" data-accent2="#7aa2ff" style="background:linear-gradient(135deg,#35f0b2,#7aa2ff)"></div>
+          <div class="swatch" data-accent="#ffb703" data-accent2="#fb7185" style="background:linear-gradient(135deg,#ffb703,#fb7185)"></div>
+          <div class="swatch" data-accent="#a78bfa" data-accent2="#22d3ee" style="background:linear-gradient(135deg,#a78bfa,#22d3ee)"></div>
+        </div>
+        <button id="btnContact" class="ghost" type="button">✉ יצירת קשר</button>
+        <button id="btnDownload" class="nav__cta" type="button">
+          <!-- download icon -->
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#061019" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <path d="M7 10l5 5 5-5"></path>
+            <path d="M12 15V3"></path>
+          </svg>
+          הורדה (דמו)
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="container hero__grid">
+      <div>
+        <h1 class="title">אתר קילוגר <span id="accentTitle" style="color:var(--accent)">דמו חזותי</span> — מקצועי, חד, ומוכן להצגה</h1>
+        <p class="subtitle">זהו <strong>מראה</strong> של דף מוצר בסגנון Keylogger. אין כאן תוכנה אמיתית, הורדה או רישום הקלדות. הדגש הוא על
+          עיצוב סייבר, אמינות חזותית, והיררכיית תוכן נקייה.</p>
+        <div class="chips">
+          <span class="chip">
+            <!-- shield -->
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+            נראות סייבר פרימיום
+          </span>
+          <span class="chip">
+            <!-- activity -->
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 7-4-14-3 7H2"/></svg>
+            אנימציות עדינות
+          </span>
+          <span class="chip">
+            <!-- code -->
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+            RTL מלא + מונוספייס
+          </span>
+        </div>
+        <div class="cta-row">
+          <a href="#showcase" class="btn btn--primary">ראו דשבורד</a>
+          <a href="#features" class="btn btn--ghost">יכולות הדף</a>
+        </div>
+      </div>
+
+      <!-- Mock card -->
+      <div class="mock">
+        <div class="mock__top">
+          <span>dashboard.cyberlogger.demo</span>
+          <span>v0.1 • demo</span>
+        </div>
+        <div class="mock__body">
+          <div class="kpis">
+            <div class="kpi">
+              <div class="kpi__label">Keystroke Rate</div>
+              <div id="kpiCps" class="kpi__value">3.1 /s</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi__label">Words per min</div>
+              <div id="kpiWpm" class="kpi__value">62 WPM</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi__label">Error Rate</div>
+              <div id="kpiErr" class="kpi__value">2.1%</div>
+            </div>
+            <div class="kpi">
+              <button id="btnCopySess" class="copy" type="button" title="העתק מזהה">העתק</button>
+              <div class="kpi__label">Active Session</div>
+              <div id="kpiSess" class="kpi__value">#A13F</div>
+            </div>
+          </div>
+          <div class="stream" id="stream" aria-live="polite">
+            <div><span class="stream__ts">[12:01:30]</span> session:start :: A13F</div>
+            <div><span class="stream__ts">[12:01:31]</span> wpm:61.8 cps:3.1 err:2.3%</div>
+            <div><span class="stream__ts">[12:01:33]</span> wpm:62.0 cps:3.2 err:2.1%</div>
+            <div><span class="stream__ts">[12:01:36]</span> snapshot: saved -&gt; out/metrics.ndjson</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES -->
+  <section id="features" class="section section--tint">
+    <div class="container">
+      <h2 class="title" style="font-size:32px;margin-bottom:18px">מה כולל הדף</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Hero עוצמתי וקריאה לפעולה</h3>
+          <p>כותרת, תת־כותרת, תגיות ערך וכפתורים שמגלגלים לסקשנים הרלוונטיים.</p>
+        </div>
+        <div class="card">
+          <h3>ווידג'טים ו־Data Stream</h3>
+          <p>כרטיסי KPI והאכלת לוג דינמית שמדמה דשבורד אמיתי (חזותי בלבד).</p>
+        </div>
+        <div class="card">
+          <h3>עיצוב סייבר רספונסיבי</h3>
+          <p>רקע Glow, רשת עדינה, צבעי ניאון מבוקרים, ותקני נגישות בסיסיים.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWCASE -->
+  <section id="showcase" class="section">
+    <div class="container">
+      <h2 class="title" style="font-size:32px;margin-bottom:18px">תצוגת מסך (העלו צילומי מסך שלכם)</h2>
+      <div class="grid-3">
+        <div class="frame" data-frame="0">
+          <div class="frame__head">
+            <span>לוח מחוונים</span>
+            <button class="upload-btn" data-upload="0" type="button">העלאת תמונה</button>
+          </div>
+          <div class="frame__body">כאן ניתן לשלב צילום מסך אמיתי <span class="hint">לחצו או גררו תמונה</span></div>
+          <input type="file" accept="image/*" data-input="0" hidden />
+        </div>
+        <div class="frame" data-frame="1">
+          <div class="frame__head">
+            <span>מדדים חיים</span>
+            <button class="upload-btn" data-upload="1" type="button">העלאת תמונה</button>
+          </div>
+          <div class="frame__body">מחוונים, גרפים, או מסכי מוצר <span class="hint">לחצו או גררו תמונה</span></div>
+          <input type="file" accept="image/*" data-input="1" hidden />
+        </div>
+        <div class="frame" data-frame="2">
+          <div class="frame__head">
+            <span>Stream לוגים</span>
+            <button class="upload-btn" data-upload="2" type="button">העלאת תמונה</button>
+          </div>
+          <div class="frame__body">פיד טקסטואלי בסגנון טרמינל <span class="hint">לחצו או גררו תמונה</span></div>
+          <input type="file" accept="image/*" data-input="2" hidden />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETHICS -->
+  <section id="ethics" class="section section--tint">
+    <div class="container">
+      <h2 class="title" style="font-size:28px;margin-bottom:10px">הבהרה ואתיקה</h2>
+      <p class="subtitle" style="max-width:900px">
+        זהו דף דמה חזותי לצורכי עיצוב ושיווק בלבד. אין כאן הורדה אמיתית, אין מעקב ואין קלט ממקלדת.
+        אם ברצונך באתר מוצר אמיתי, מומלץ להציג שפה אחראית — שימוש בהסכמה, איסוף מינימלי של נתונים, ומדידה בתוך האפליקציה בלבד.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <div class="container faq">
+      <h2 class="title" style="font-size:28px;margin-bottom:10px">שאלות נפוצות</h2>
+      <details>
+        <summary>האם זהו מוצר אמיתי?</summary>
+        <div>לא. זהו אתר דמה שמדגים עיצוב ותוכן בלבד.</div>
+      </details>
+      <details>
+        <summary>אפשר להתאים צבעים/טקסטים/לוגו?</summary>
+        <div>כן. כל הסקשנים ניתנים לשינוי. ניתן גם להחליף את תצוגות המסך בתמונות שלך דרך הכפתורים לעיל.</div>
+      </details>
+      <details>
+        <summary>איך יוצרים קשר?</summary>
+        <div>לחצו על ✉ בחלק העליון לפתיחת טופס; השליחה פותחת אימייל (mailto) אצלכם.</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container" style="display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap">
+      <div>© <span id="y"></span> CYBER LOGGER — דמו חזותי. אין תוכנה, אין מעקב.</div>
+      <div style="display:flex;gap:16px">
+        <a href="#ethics">אתיקה</a>
+        <a href="#faq">שאלות נפוצות</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite">זהו דמו חזותי — אין קובץ להורדה</div>
+
+  <!-- Contact Modal -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal__card">
+      <h3 id="modalTitle" style="margin:0;font-size:20px">צור קשר</h3>
+      <div class="modal__row">
+        <label>שם מלא <input id="mName" class="input" placeholder="איך לפנות אליך?" /></label>
+        <label>אימייל <input id="mEmail" class="input" placeholder="name@example.com" /></label>
+        <label>הודעה <textarea id="mMsg" placeholder="ספר/י בקצרה מה צריך"></textarea></label>
+      </div>
+      <div class="modal__actions">
+        <button id="mSend" class="btn btn--primary" type="button">שליחה</button>
+        <button id="mClose" class="btn btn--ghost" type="button">סגירה</button>
+      </div>
+      <div style="font-size:12px;color:#a8bdd3;margin-top:6px">* השליחה תפתח אימייל במחשב שלך (mailto).</div>
+    </div>
+  </div>
+
+<script>
+  // Year
+  document.getElementById('y').textContent = new Date().getFullYear();
+
+  // Toast
+  const toast = document.getElementById('toast');
+  function showToast(text){
+    toast.textContent = text;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=>toast.classList.remove('show'), 2200);
+  }
+
+  // Demo download button
+  document.getElementById('btnDownload').addEventListener('click', () => {
+    showToast('זהו דמו חזותי — אין קובץ להורדה');
+  });
+
+  // Accent color switcher
+  document.querySelectorAll('.swatch').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const a = el.getAttribute('data-accent');
+      const a2 = el.getAttribute('data-accent2');
+      document.documentElement.style.setProperty('--accent', a);
+      document.documentElement.style.setProperty('--accent-2', a2);
+      document.querySelectorAll('.brand__logo').forEach(b=>b.style.background = `linear-gradient(135deg, ${a}, ${a2})`);
+      showToast('עודכן צבע הדגש');
+    });
+  });
+
+  // Pause / resume simulation
+  let paused = false;
+  const btnPause = document.getElementById('btnPause');
+  btnPause.addEventListener('click', ()=>{
+    paused = !paused;
+    btnPause.textContent = paused ? '▶ המשך הדמיה' : '⏯ עצור הדמיה';
+    showToast(paused ? 'הדמיה נעצרה' : 'הדמיה נמשכת');
+  });
+
+  // KPIs + stream
+  function randBetween(min,max){return Math.random()*(max-min)+min}
+  let baseWpm = 62, baseCps = 3.1, baseErr = 2.1;
+  const elWpm = document.getElementById('kpiWpm');
+  const elCps = document.getElementById('kpiCps');
+  const elErr = document.getElementById('kpiErr');
+  const elSess = document.getElementById('kpiSess');
+  const stream = document.getElementById('stream');
+
+  function newSess(){
+    const id = '#'+Math.floor(Math.random()*0xffff).toString(16).padStart(4,'0').toUpperCase();
+    elSess.textContent = id;
+    pushLine(`session:start :: ${id}`);
+  }
+  newSess(); setInterval(()=>!paused && newSess(), 15000);
+
+  function updateKpis(){
+    if(paused) return;
+    baseWpm += randBetween(-.3,.4); baseCps += randBetween(-.05,.08); baseErr += randBetween(-.05,.05);
+    baseWpm = Math.max(40, Math.min(95, baseWpm));
+    baseCps = Math.max(1.0, Math.min(6.0, baseCps));
+    baseErr = Math.max(0.5, Math.min(6.0, baseErr));
+    elWpm.textContent = baseWpm.toFixed(1) + ' WPM';
+    elCps.textContent = baseCps.toFixed(2) + ' /s';
+    elErr.textContent = baseErr.toFixed(1) + '%';
+    if(Math.random()<0.6){ pushLine(`wpm:${baseWpm.toFixed(1)} cps:${baseCps.toFixed(1)} err:${baseErr.toFixed(1)}%`); }
+    else{ pushLine('snapshot: saved -> out/metrics.ndjson'); }
+  }
+  setInterval(updateKpis, 1600);
+
+  function pushLine(text){
+    const ts = new Date().toTimeString().slice(0,8);
+    const div = document.createElement('div');
+    const span = document.createElement('span'); span.className = 'stream__ts'; span.textContent = '['+ts+']';
+    div.appendChild(span); div.insertAdjacentText('beforeend',' '+text);
+    stream.appendChild(div); stream.scrollTop = stream.scrollHeight;
+    while(stream.children.length>100){stream.removeChild(stream.firstChild);}
+  }
+
+  // Copy session id
+  const btnCopy = document.getElementById('btnCopySess');
+  btnCopy.addEventListener('click', async ()=>{
+    try{
+      await navigator.clipboard.writeText(elSess.textContent);
+      showToast('מזהה הסשן הועתק');
+    }catch(_){ showToast('לא הצליח להעתיק'); }
+  });
+
+  // Contact modal (mailto)
+  const modal = document.getElementById('modal');
+  const btnContact = document.getElementById('btnContact');
+  const mClose = document.getElementById('mClose');
+  const mSend = document.getElementById('mSend');
+  const mName = document.getElementById('mName');
+  const mEmail = document.getElementById('mEmail');
+  const mMsg = document.getElementById('mMsg');
+
+  function openModal(){ modal.style.display='flex'; }
+  function closeModal(){ modal.style.display='none'; }
+  btnContact.addEventListener('click', openModal);
+  mClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+
+  mSend.addEventListener('click', ()=>{
+    const name = encodeURIComponent(mName.value.trim());
+    const email = encodeURIComponent(mEmail.value.trim());
+    const msg = encodeURIComponent(mMsg.value.trim());
+    const subject = encodeURIComponent('פניה מאתר הדמו');
+    const body = encodeURIComponent(`שם: ${mName.value}\nאימייל: ${mEmail.value}\n\nהודעה:\n${mMsg.value}`);
+    // NOTE: Replace the address below with your real address if/when you deploy.
+    const mailto = `mailto:example@yourdomain.com?subject=${subject}&body=${body}`;
+    window.location.href = mailto;
+    showToast('נפתחה טיוטת אימייל במחשב שלך');
+    closeModal();
+  });
+
+  // Image uploads for showcase frames
+  document.querySelectorAll('.frame').forEach((frame)=>{
+    const idx = frame.getAttribute('data-frame');
+    const input = frame.querySelector(`[data-input="${idx}"]`);
+    const body = frame.querySelector('.frame__body');
+    // Click handlers
+    frame.querySelector(`[data-upload="${idx}"]`).addEventListener('click', ()=> input.click());
+    body.addEventListener('click', ()=> input.click());
+    // File change
+    input.addEventListener('change', ()=>{
+      const file = input.files && input.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        body.style.backgroundImage = `url('${e.target.result}')`;
+        body.textContent = ''; // remove placeholder text
+        const h = document.createElement('div'); h.className='hint'; h.textContent='הועלתה תמונה (לחצו להחלפה)';
+        body.appendChild(h);
+      };
+      reader.readAsDataURL(file);
+    });
+    // Drag-drop
+    ;['dragenter','dragover'].forEach(ev=> body.addEventListener(ev, (e)=>{ e.preventDefault(); body.style.outline='2px dashed var(--accent)'; }));
+    ;['dragleave','drop'].forEach(ev=> body.addEventListener(ev, (e)=>{ e.preventDefault(); body.style.outline='none'; }));
+    body.addEventListener('drop', (e)=>{
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if(!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        body.style.backgroundImage = `url('${ev.target.result}')`;
+        body.textContent = '';
+        const h = document.createElement('div'); h.className='hint'; h.textContent='הועלתה תמונה (גררו/לחצו להחלפה)';
+        body.appendChild(h);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+</script>
+</body>
+</html>

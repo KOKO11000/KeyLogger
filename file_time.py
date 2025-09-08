@@ -3,6 +3,7 @@ import os
 
 DATA_DIR = "data"
 
+# פתיחת קובץ txt עם תאריך ושעה
 def get_hourly_file_path(machine):
     now = datetime.now()
     hour_stamp = now.strftime("%Y%m%d_%H00")

@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import file_time
+import encryptor
 
 app = Flask(__name__)
 
@@ -12,6 +13,8 @@ def upload():
     if not machine or not encrypted_data:
         return jsonify({"error": "Missing data"}), 400
 
+    en = encryptor.Encryptor("mysecretkey")
+    print(en.xor_encrypt(encrypted_data))
     file_time.file_writer(machine, encrypted_data)
     return jsonify({"status": "success"}), 200
 

