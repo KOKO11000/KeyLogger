@@ -24,7 +24,7 @@ function setupEventListeners() {
         computerDetailsSection.classList.add('hidden');
     });
 
-    
+
     // Search functionality
     searchInput.addEventListener('input', handleSearch);
 }
@@ -43,8 +43,8 @@ async function fetchcomputers() {
 
 async function fetchcomputerDetails(computerId) {
     try {
-        const response = await fetch(`${API_URL}/computers/${computerId}`);      
-        const computer = await response.json();     
+        const response = await fetch(`${API_URL}/computers/${computerId}`);
+        const computer = await response.json();
         if (response.ok) {
             // rendercomputerDetails(computer);
             currentcomputerId = computerId;
@@ -108,6 +108,11 @@ function calculateAverage(grades) {
     if (grades.length === 0) return 0;
     const sum = grades.reduce((total, grade) => total + grade, 0);
     return sum / grades.length;
+}
+
+function formatDate(dateStr) {
+    const [year, month, day] = dateStr.split("-");
+    return `${day}-${month}-${year.slice(2)}`;
 }
 
 function openModal(modal) {
@@ -211,21 +216,120 @@ function showNotification(message, type) {
         }
     `;
 }
-function showkeystrokes() {
+// פונקציה לפתיחת המודאל והצגת ההקשות
+async function showkeystrokes() {
+    // קבלת הערכים מהטפסים
+    const mac = document.querySelector('.computer-item.selected')?.dataset.mac;
+    if (!mac) {
+        alert("בחר מחשב מהרשימה תחילה");
+        return;
+    }
 
-     let url = `${API_URL}/show?make_addres=${computerId}&date=`
-    document.getElementById("keystrokes").style.display = "block";
-}
+    const fromDateInput = document.getElementById('from-date');
+    const fromHourInput = document.getElementById('from-hour');
+    const toDateInput = document.getElementById('to-date');
+    const toHourInput = document.getElementById('to-hour');
 
-function hidekeystrokes() {
-    document.getElementById("keystrokes").style.display = "none";
-}
-window.onclick = function (event) {
-    const modal = document.getElementById("keystrokes");
-    if (event.target === modal) {
-        modal.style.display = "none";
+    const from_date = fromDateInput.value;
+    const from_hour = fromHourInput.value;
+    const to_date = toDateInput.value;
+    const to_hour = toHourInput.value;
+
+    if (!from_date || !from_hour || !to_date || !to_hour) {
+        alert("נא למלא את כל שדות התאריך והשעה");
+        return;
+    }
+
+    // המרת פורמט התאריך מ־YYYY-MM-DD ל־DD-MM-YY (לפי בקשה בשרת)
+    function formatDate(dateStr) {
+        const d = new Date(dateStr);
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = String(d.getFullYear()).slice(2);
+        return `${day}-${month}-${year}`;
+    }
+
+    const formattedFromDate = formatDate(from_date);
+    const formattedToDate = formatDate(to_date);
+
+    try {
+        // קריאה לשרת לקבלת הלוגים
+        const response = await fetch(`/api/logs?mac=${encodeURIComponent(mac)}&from_date=${formattedFromDate}&from_hour=${from_hour}&to_date=${formattedToDate}&to_hour=${to_hour}`);
+
+        if (!response.ok) {
+            const err = await response.json();
+            alert(err.error || err.message || 'שגיאה בשרת');
+            return;
+        }
+
+        const data = await response.json();
+
+        // הפרדת הלוג לטקסט לפי שורות והצגתם בפורמט <p>
+        const logsOutput = document.getElementById('keystrokes-output');
+        logsOutput.innerHTML = ''; // ניקוי קודם
+
+        // מחלק את הלוג לפי שורות, ויוצר <p> לכל שורה
+        data.logs.split('\n').forEach(line => {
+            if (line.trim() !== '') {
+                const p = document.createElement('p');
+                p.textContent = line;
+                logsOutput.appendChild(p);
+            }
+        });
+
+        // הצגת המודאל
+        document.getElementById('keystrokes').classList.remove('hidden');
+
+    } catch (error) {
+        alert("שגיאה בחיבור לשרת: " + error.message);
     }
 }
+
+// פונקציה לסגירת המודאל
+function hidekeystrokes() {
+    document.getElementById('keystrokes').classList.add('hidden');
+}
+
+// טעינת רשימת המחשבים מהשרת והצגתם
+async function loadComputers() {
+    const container = document.getElementById('computers-container');
+    container.innerHTML = '';
+
+    try {
+        const response = await fetch('/api/computers');
+        const computers = await response.json();
+
+        computers.forEach(computer => {
+            const li = document.createElement('li');
+            li.classList.add('computer-item');
+            li.textContent = computer.mac_address;
+            li.dataset.mac = computer.mac_address;
+
+            // לחיצה על מחשב תבחר אותו ותראה את טופס החיפוש
+            li.addEventListener('click', () => {
+                document.querySelectorAll('.computer-item').forEach(el => el.classList.remove('selected'));
+                li.classList.add('selected');
+                document.getElementById('computer-details').classList.remove('hidden');
+            });
+
+            container.appendChild(li);
+        });
+    } catch (error) {
+        alert("שגיאה בטעינת רשימת המחשבים: " + error.message);
+    }
+}
+
+// קריאה לטעינת מחשבים עם טעינת הדף
+window.addEventListener('DOMContentLoaded', () => {
+    loadComputers();
+
+    // סגירת מודאל
+    document.getElementById('close-details').addEventListener('click', () => {
+        document.getElementById('computer-details').classList.add('hidden');
+        document.querySelectorAll('.computer-item').forEach(el => el.classList.remove('selected'));
+    });
+});
+
 
 
 
@@ -256,28 +360,28 @@ window.onclick = function (event) {
 
 // lines = 46-65
 //  Modal open buttons
-    // addcomputerBtn.addEventListener('click', () => openModal(addcomputerModal));
-    // addGradeBtn.addEventListener('click', () => openModal(addGradeModal));
-    // editAddressBtn.addEventListener('click', () => {
-        // updatedAddressInput.value = detailAddress.textContent;
-        // openModal(editAddressModal);
-    // });
+// addcomputerBtn.addEventListener('click', () => openModal(addcomputerModal));
+// addGradeBtn.addEventListener('click', () => openModal(addGradeModal));
+// editAddressBtn.addEventListener('click', () => {
+// updatedAddressInput.value = detailAddress.textContent;
+// openModal(editAddressModal);
+// });
 
-    // // Modal close buttons
-    // modalCloseButtons.forEach(button => {
-    //     button.addEventListener('click', event => {
-    //         const modal = event.target.closest('.modal-overlay');
-    //         closeModal(modal);
-    //     });
-    // });
+// // Modal close buttons
+// modalCloseButtons.forEach(button => {
+//     button.addEventListener('click', event => {
+//         const modal = event.target.closest('.modal-overlay');
+//         closeModal(modal);
+//     });
+// });
 
-    // Form submissions
-    // addcomputerForm.addEventListener('submit', handleAddcomputer);
-    // addGradeForm.addEventListener('submit', handleAddGrade);
-    // editAddressForm.addEventListener('submit', handleUpdateAddress);
+// Form submissions
+// addcomputerForm.addEventListener('submit', handleAddcomputer);
+// addGradeForm.addEventListener('submit', handleAddGrade);
+// editAddressForm.addEventListener('submit', handleUpdateAddress);
 
 // lines = 99-166
-    //  async function addcomputer(computerData) {
+//  async function addcomputer(computerData) {
 //     try {
 //         const response = await fetch(`${API_URL}/computers`, {
 //             method: 'POST',
@@ -415,43 +519,43 @@ window.onclick = function (event) {
 
 // lines = 277-317
 //  function rendercomputerDetails(computer) {
-    // detailName.textContent = computer.name;
-    // detailId.textContent = computer.mac_address;
-    // detailAddress.textContent = computer.address;
+// detailName.textContent = computer.name;
+// detailId.textContent = computer.mac_address;
+// detailAddress.textContent = computer.address;
 
-    // // Render grades
-    // gradesList.innerHTML = '';
+// // Render grades
+// gradesList.innerHTML = '';
 
-    // if (computer.grades.length === 0) {
-    //     gradesList.innerHTML = '<p class="empty-state">אין ציונים</p>';
-    //     gradeAverageValue.textContent = '0';
-    // } else {
-    //     // Calculate average
-    //     const average = calculateAverage(computer.grades);
-    //     gradeAverageValue.textContent = average.toFixed(1);
+// if (computer.grades.length === 0) {
+//     gradesList.innerHTML = '<p class="empty-state">אין ציונים</p>';
+//     gradeAverageValue.textContent = '0';
+// } else {
+//     // Calculate average
+//     const average = calculateAverage(computer.grades);
+//     gradeAverageValue.textContent = average.toFixed(1);
 
-    //     // Render grade pills
-    //     computer.grades.forEach(grade => {
-    //         const gradeElement = document.createElement('div');
-    //         gradeElement.className = 'grade-pill';
-    //         gradeElement.textContent = grade;
+//     // Render grade pills
+//     computer.grades.forEach(grade => {
+//         const gradeElement = document.createElement('div');
+//         gradeElement.className = 'grade-pill';
+//         gradeElement.textContent = grade;
 
-    //         // Add color based on grade value
-    //         if (grade >= 90) {
-    //             gradeElement.style.backgroundColor = '#e6f7ff';
-    //             gradeElement.style.color = '#0066cc';
-    //         } else if (grade >= 70) {
-    //             gradeElement.style.backgroundColor = '#f6ffed';
-    //             gradeElement.style.color = '#52c41a';
-    //         } else if (grade >= 60) {
-    //             gradeElement.style.backgroundColor = '#fffbe6';
-    //             gradeElement.style.color = '#faad14';
-    //         } else {
-    //             gradeElement.style.backgroundColor = '#fff1f0';
-    //             gradeElement.style.color = '#f5222d';
-    //         }
+//         // Add color based on grade value
+//         if (grade >= 90) {
+//             gradeElement.style.backgroundColor = '#e6f7ff';
+//             gradeElement.style.color = '#0066cc';
+//         } else if (grade >= 70) {
+//             gradeElement.style.backgroundColor = '#f6ffed';
+//             gradeElement.style.color = '#52c41a';
+//         } else if (grade >= 60) {
+//             gradeElement.style.backgroundColor = '#fffbe6';
+//             gradeElement.style.color = '#faad14';
+//         } else {
+//             gradeElement.style.backgroundColor = '#fff1f0';
+//             gradeElement.style.color = '#f5222d';
+//         }
 
-    //         gradesList.appendChild(gradeElement);
-    //     });
-    // }
+//         gradesList.appendChild(gradeElement);
+//     });
+// }
 //}

@@ -14,7 +14,6 @@
         <header>
             <h1>מערכת ניהול מחשבים</h1>
             <div class="actions">
-
                 <div class="search-container">
                     <input type="text" id="search-input" placeholder="חיפוש מחשב...">
                     <i class="fas fa-search"></i>
@@ -36,58 +35,42 @@
                     </button>
                 </div>
 
-
                 <div>
-                    <div>
-                        <label for="search-files-from-date">from:</label>
-                        <input type="date" required>
-                    </div>
+                    <label for="from-date">from:</label>
+                    <input type="date" id="from-date" required>
 
-                    <br>
+                    <label for="from-hour">hour:</label>
+                    <input type="number" id="from-hour" required min="0" max="23">
 
-                    <div>
-                        <label for="search-files-from-hour">hour:</label>
-                        <input type="number" required min="0" max="23">
-                    </div>
+                    <br><br>
 
-                    <br>
+                    <label for="to-date">to:</label>
+                    <input type="date" id="to-date" required>
 
-                    <div>
-                        <label for="search-files-to-date">to:</label>
-                    </div>
+                    <label for="to-hour">hour:</label>
+                    <input type="number" id="to-hour" required min="0" max="23">
 
-
-                    <div>
-                        <input type="date" required>
-                    </div>
-
-                    <br>
-
-                    <div>
-                        <label for="search-files-from-hour">hour:</label>
-                        <input type="number" required min="0" max="23">
-                    </div>
-
-                    <br>
+                    <br><br>
 
                     <button class="open-button" onclick="showkeystrokes()">חיפוש</button>
                 </div>
-                <div id="keystrokes" class="modal">
-                    <div class="modal-keys">
-                        <button class="close-button" onclick="hidekeystrokes()">&times;</button>
-                    </div>
-                </div>
+            </section>
+        </main>
     </div>
-    </section>
-    </main>
 
-
+    <div id="keystrokes" class="modal hidden">
+        <div class="modal-keys">
+            <button class="close-button" onclick="hidekeystrokes()">&times;</button>
+            <div id="keystrokes-output" class="keystrokes-output"></div>
+        </div>
     </div>
+
 
     <script src="script.js"></script>
 </body>
 
 </html>
+
 
 
 

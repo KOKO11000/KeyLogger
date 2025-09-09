@@ -25,7 +25,8 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     direction: rtl;
     background-color: var(--background);
@@ -313,6 +314,7 @@ main {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -399,53 +401,64 @@ input:invalid {
     .container {
         padding: 1rem;
     }
-    
+
     .actions {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .search-container {
         max-width: 100%;
     }
-    
+
     .modal-content {
         width: 90%;
     }
 }
-.open-button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #b1b4c6;
-      color: #3f51b5;
-      font-weight: bold;
-      font-size: 1.2em;
-    }
 
-    .modal {
-      display: none; 
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.5); 
-    }  
-  .modal-keys {
-  position: relative;
-  background-color: #fff;
-  margin: 10% auto;
-  padding: 20px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-  height: 80vh;
-  overflow-y: auto;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+.open-button {
+  padding: 10px 20px;
+  font-size: 1.2em;
+  cursor: pointer;
+  background-color: #b1b4c6;
+  color: var(--primary-color);
+  font-weight: bold;
+  border-radius: var(--border-radius);
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.open-button:hover {
+  background-color: #9aa0bf;
+}
+
+
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-keys {
+    position: relative;
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    height: 80vh;
+    overflow-y: auto;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .close-button {
@@ -454,14 +467,30 @@ input:invalid {
   right: 10px;
   width: 40px;         
   height: 40px;        
-  background: red;     
+  background: #f44336;  /* אדום לפי ערך ה-error */
   border: none;
   font-size: 24px;
   font-weight: bold;
-  color: #0d0b0b;
+  color: white;         /* טקסט לבן בשביל ניגודיות טובה */
   cursor: pointer;
   padding: 0;          
   line-height: 40px;   
   text-align: center;  
-  border-radius: 0;    
+  border-radius: 4px;    /* עיגול קל */
+  transition: background-color 0.3s ease;
 }
+.close-button:hover {
+  background-color: #d32f2f;  /* אדום כהה בהובר */
+}
+
+.keystrokes-output p {
+  margin: 0.5em 0;
+  font-family: monospace;
+  text-align: right; 
+   white-space: pre-wrap;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+
